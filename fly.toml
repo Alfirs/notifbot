@@ -1,0 +1,37 @@
+app = "notifbot"  # Замените на уникальное имя вашего приложения
+
+kill_signal = "SIGINT"
+kill_timeout = 5
+
+[build]
+
+[deploy]
+  release_command = "echo 'Release command here'"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 8080
+  processes = ["app"]
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+# [env]
+#  BOT_TOKEN = "YOUR_BOT_TOKEN"  # Замените на ваш токен (рекомендуется использовать секреты)
+#  ADMIN_CHAT_ID = "YOUR_ADMIN_CHAT_ID" # Замените на ваш chat ID (рекомендуется использовать секреты)
+
+[metrics]
+  port = 9091
